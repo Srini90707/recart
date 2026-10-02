@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { View } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Colors from '../constants/Colors';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -25,53 +26,60 @@ function HomeStackNavigator() {
 }
 
 export default function BottomTabNavigator() {
+  const insets = useSafeAreaInsets();
+  // Safe bottom padding ensures no collision with Android gesture bar or iOS home indicator
+  const bottomInset = Math.max(insets.bottom, Platform.OS === 'android' ? 12 : 20);
+  const tabBarHeight = 56 + bottomInset;
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.textSecondary,
+        tabBarInactiveTintColor: '#94A3B8',
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: Colors.card,
-          borderTopColor: Colors.border,
-        }
+        tabBarShowLabel: true,
+        tabBarHideOnKeyboard: true,
+        tabBarLabelStyle: styles.tabLabel,
+        tabBarItemStyle: styles.tabBarItem,
+        tabBarStyle: [
+          styles.tabBar,
+          {
+            height: tabBarHeight,
+            paddingBottom: bottomInset,
+          },
+        ],
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="home-outline" size={24} color={color} />,
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Search"
         component={SearchScreen}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="search-outline" size={24} color={color} />,
+          tabBarLabel: 'Explore',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'compass' : 'compass-outline'} size={23} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Sell"
         component={CreateListingScreen}
         options={{
-          title: '',
-          tabBarIcon: ({ color }) => (
-            <View style={{
-              backgroundColor: Colors.primary,
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: -20,
-              shadowColor: Colors.primary,
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-              shadowRadius: 4,
-              elevation: 5,
-            }}>
-              <Ionicons name="add" size={32} color={Colors.card} />
+          tabBarLabel: 'Sell',
+          tabBarIcon: () => (
+            <View style={styles.sellButtonRing}>
+              <View style={styles.sellButtonInner}>
+                <Ionicons name="add" size={26} color="#FFFFFF" />
+              </View>
             </View>
           ),
         }}
@@ -80,16 +88,67 @@ export default function BottomTabNavigator() {
         name="Favorites"
         component={FavoritesScreen}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="heart-outline" size={24} color={color} />,
+          tabBarLabel: 'Saved',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'heart' : 'heart-outline'} size={22} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={24} color={color} />,
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'person' : 'person-outline'} size={22} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+    paddingTop: 6,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  tabBarItem: {
+    paddingVertical: 2,
+  },
+  tabLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    marginTop: 2,
+    marginBottom: 2,
+  },
+  sellButtonRing: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#FFE3D3',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -10,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  sellButtonInner: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

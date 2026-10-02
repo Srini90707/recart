@@ -15,17 +15,17 @@ const SLIDES = [
   {
     title: 'Discover Great Deals',
     description: 'Find quality pre-loved products near you.',
-    image: 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?q=80&w=600&auto=format&fit=crop',
+    image: require('../../assets/images/onboarding-deals.jpg'),
   },
   {
     title: 'Sell in Minutes',
     description: 'Upload photos, add details and publish your listing.',
-    image: 'https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=600&auto=format&fit=crop',
+    image: require('../../assets/images/onboarding-sell.jpg'),
   },
   {
     title: 'Connect with Sellers',
     description: 'Save products and chat directly with sellers.',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop',
+    image: require('../../assets/images/onboarding-connect.jpg'),
   },
 ];
 
@@ -93,7 +93,7 @@ export default function OnboardingScreen() {
         <Animated.View style={[styles.slideContainer, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
           <View style={styles.imageWrapper}>
             <Image 
-              source={{ uri: SLIDES[currentIndex].image }} 
+              source={SLIDES[currentIndex].image} 
               style={styles.illustration} 
               resizeMode="cover"
             />
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: Spacing.xxl,
     overflow: 'hidden',
+    backgroundColor: '#F8FAFC',
     ...Shadows.large,
   },
   illustration: {

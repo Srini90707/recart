@@ -1,27 +1,56 @@
 import { StyleSheet } from 'react-native';
-import Colors from '../../constants/Colors';
-import Typography from '../../constants/Typography';
 import Spacing from '../../constants/Spacing';
+
 
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surface,
-    borderRadius: 12,
-    paddingHorizontal: Spacing.md,
-    height: 48,
-    marginHorizontal: Spacing.md,
-    marginVertical: Spacing.md,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    height: 50,
+    marginHorizontal: Spacing.lg,
+    marginVertical: Spacing.sm,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: '#E2E8F0',
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
-  icon: {
-    marginRight: Spacing.sm,
+  searchIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: '#FFF7F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 9,
   },
   input: {
     flex: 1,
-    fontSize: Typography.sizes.md,
-    color: Colors.text,
+    fontSize: 13.5,
+    color: '#0F172A',
+    fontWeight: '500',
+    paddingVertical: 0,
+    height: '100%',
+  },
+  clearBtn: {
+    padding: 6,
+    marginRight: 2,
+  },
+  filterBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 6,
   },
 });
+

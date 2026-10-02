@@ -36,10 +36,17 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const updateUser = async (updatedData) => {
+    const merged = { ...(user || {}), ...updatedData };
+    await StorageService.saveCurrentUser(merged);
+    setUser(merged);
+  };
+
   const completeOnboarding = async () => {
     await StorageService.setOnboardingStatus(true);
     setHasCompletedOnboarding(true);
   };
+
 
   return (
     <AuthContext.Provider value={{
@@ -48,7 +55,9 @@ export function AuthProvider({ children }) {
       isLoading,
       login,
       logout,
+      updateUser,
       completeOnboarding
+
     }}>
       {children}
     </AuthContext.Provider>

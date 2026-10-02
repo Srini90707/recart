@@ -1,126 +1,258 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import Spacing from '../constants/Spacing';
-import Typography from '../constants/Typography';
-import Shadows from '../constants/Shadows';
-
-const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: '#F8FAFC',
   },
+
+  /* ------------------------------------------------------------- */
+  /* Top App Bar & Header                                          */
+  /* ------------------------------------------------------------- */
   headerContainer: {
+    backgroundColor: '#FFFFFF',
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  headerTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.sm,
   },
   brandContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 2,
+  },
+  logoImage: {
+    width: 34,
+    height: 34,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  brandTextColumn: {
+    justifyContent: 'center',
   },
   logoText: {
-    fontSize: Typography.sizes.xl,
-    fontWeight: '800',
-    color: '#1A2B4C',
-    marginLeft: 4,
-    letterSpacing: -0.5,
+    fontSize: 20,
+    fontWeight: '900',
+    color: '#0F172A',
+    letterSpacing: -0.6,
   },
-  locationContainer: {
+  logoSubtext: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: Colors.primary,
+    letterSpacing: 0.3,
+    marginTop: -2,
+  },
+  headerActionsRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
-  locationText: {
-    fontSize: Typography.sizes.sm,
-    color: Colors.textSecondary,
-    marginLeft: 2,
-    fontWeight: '500',
-  },
-  headerIcon: {
+  headerIconBtn: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.surface,
+    backgroundColor: '#F8FAFC',
     justifyContent: 'center',
     alignItems: 'center',
-    ...Shadows.sm,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    position: 'relative',
   },
-  toggleContainer: {
-    flexDirection: 'row',
+  notificationBadgeDot: {
+    position: 'absolute',
+    top: 8,
+    right: 9,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.primary,
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
+  },
+
+  /* ------------------------------------------------------------- */
+  /* VIP Promo Banner (Explore Card)                               */
+  /* ------------------------------------------------------------- */
+  promoBanner: {
+    backgroundColor: '#FFF7F2',
     marginHorizontal: Spacing.lg,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.sm,
-    backgroundColor: '#F3F4F6',
-    borderRadius: 20,
-    padding: 4,
-  },
-  toggleButton: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: 'center',
+    padding: 12,
     borderRadius: 16,
+    marginTop: 8,
+    marginBottom: 6,
+    borderWidth: 1,
+    borderColor: '#FFE3D3',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
   },
-  toggleButtonActive: {
-    backgroundColor: Colors.surface,
-    ...Shadows.sm,
-  },
-  toggleText: {
-    fontSize: Typography.sizes.sm,
-    fontWeight: '600',
-    color: Colors.textSecondary,
-  },
-  toggleTextActive: {
-    color: Colors.primary,
-  },
-  categoriesGrid: {
+  promoHeaderRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: Spacing.lg,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.sm,
-  },
-  categoryItem: {
-    width: (width - Spacing.lg * 2 - Spacing.md * 2) / 3, // 3 columns
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-  },
-  categoryImageContainer: {
-    width: 68,
-    height: 68,
-    borderRadius: 22,
-    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 6,
-    borderWidth: 1.5,
+  },
+  promoLocationPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 8,
+    paddingVertical: 3.5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#FFE3D3',
+    gap: 4,
+  },
+  promoLocationLabel: {
+    fontSize: 10.5,
+    fontWeight: '600',
+    color: '#64748B',
+  },
+  promoLocationText: {
+    fontSize: 10.5,
+    fontWeight: '800',
+    color: '#0F172A',
+    maxWidth: 150,
+  },
+  promoLocationChange: {
+    fontSize: 9.5,
+    fontWeight: '700',
+    color: Colors.primary,
+    marginLeft: 2,
+  },
+  promoContentRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  promoLeft: {
+    flex: 1,
+    paddingRight: 8,
+  },
+  promoTitle: {
+    fontSize: 15,
+    fontWeight: '900',
+    color: '#0F172A',
+    lineHeight: 19,
+  },
+  promoTitleAccent: {
+    fontSize: 15,
+    fontWeight: '900',
+    color: Colors.primary,
+    lineHeight: 19,
+    marginBottom: 2,
+  },
+  promoSubtitle: {
+    fontSize: 10.5,
+    color: '#64748B',
+    lineHeight: 15,
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  promoCtaBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: '#0F172A',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    gap: 4,
+  },
+  promoCtaText: {
+    color: '#FFFFFF',
+    fontSize: 10.5,
+    fontWeight: '700',
+  },
+  promoRightGraphic: {
+    width: 56,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  promoGlowCircle: {
+    position: 'absolute',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#FFE8DB',
+  },
+  promoIconPill: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FFE3D3',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+
+  /* ------------------------------------------------------------- */
+  /* Search Bar Placement Override                                 */
+  /* ------------------------------------------------------------- */
+  searchBarOverride: {
+    marginHorizontal: Spacing.lg,
+    marginTop: 0,
+    marginBottom: 10,
+  },
+
+  /* ------------------------------------------------------------- */
+  /* Categories Carousel                                           */
+  /* ------------------------------------------------------------- */
+  categoriesSection: {
+    marginTop: 0,
+    marginBottom: 12,
+  },
+  categoriesScrollList: {
+    paddingLeft: Spacing.lg,
+    paddingRight: 6,
+  },
+  categoryItem: {
+    width: 72,
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  categoryImageContainer: {
+    width: 66,
+    height: 66,
+    borderRadius: 20,
     overflow: 'hidden',
     position: 'relative',
     backgroundColor: '#FFFFFF',
-    ...Shadows.small,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 5,
+    elevation: 2,
+    marginBottom: 6,
   },
   categoryImage: {
     width: '100%',
     height: '100%',
   },
-  lessIconWrapper: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFF7ED',
-  },
   categoryBadge: {
     position: 'absolute',
     bottom: 2,
     right: 2,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
@@ -128,377 +260,135 @@ export const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
   },
   categoryBadgeActive: {
-    backgroundColor: '#1A2B4C',
+    backgroundColor: '#0F172A',
   },
   categoryText: {
-    fontSize: Typography.sizes.xs,
+    fontSize: 12,
     fontWeight: '600',
-    color: Colors.text,
+    color: '#334155',
     textAlign: 'center',
   },
   categoryTextActive: {
     color: Colors.primary,
     fontWeight: '800',
   },
-  activeFilterRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: Spacing.lg,
-    marginBottom: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 8,
-    backgroundColor: '#FFF7F2',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#FFE3D3',
-  },
-  activeFilterText: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.text,
-  },
-  clearFilterBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  clearFilterText: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.primary,
-    fontWeight: '700',
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: Spacing.xxl,
-    paddingHorizontal: Spacing.lg,
-  },
-  emptyTitle: {
-    fontSize: Typography.sizes.md,
-    fontWeight: Typography.weights.bold,
-    color: Colors.text,
-    marginTop: Spacing.sm,
-  },
-  emptySubtitle: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: 4,
-  },
-  promoBanner: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#FFF7F2',
-    marginHorizontal: Spacing.lg,
-    padding: Spacing.lg,
-    borderRadius: 16,
-    marginBottom: Spacing.lg,
-    borderWidth: 1,
-    borderColor: '#FFE3D3',
-  },
-  promoTitle: {
-    fontSize: Typography.sizes.lg,
-    fontWeight: '800',
-    color: '#1A2B4C',
-  },
-  promoSubtitle: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.textSecondary,
-    marginTop: 4,
-    fontWeight: '500',
-  },
+
+  /* ------------------------------------------------------------- */
+  /* Sections & Headers                                            */
+  /* ------------------------------------------------------------- */
   section: {
-    marginBottom: Spacing.lg,
+    marginBottom: 16,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.sm,
+    marginBottom: 10,
+  },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: Typography.sizes.lg,
-    fontWeight: '700',
-    color: '#1A2B4C',
+    fontSize: 17,
+    fontWeight: '800',
+    color: '#0F172A',
+    letterSpacing: -0.3,
   },
-  seeAll: {
-    fontSize: Typography.sizes.sm,
-    fontWeight: '600',
+  sectionBadge: {
+    backgroundColor: '#FFF7ED',
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: 8,
+    marginLeft: 6,
+    borderWidth: 1,
+    borderColor: '#FFEDD5',
+  },
+  sectionBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: Colors.primary,
+  },
+  seeAllBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+  },
+  seeAllText: {
+    fontSize: 12,
+    fontWeight: '700',
     color: Colors.primary,
   },
   horizontalList: {
     paddingLeft: Spacing.lg,
-    paddingRight: Spacing.lg,
+    paddingRight: 6,
   },
   horizontalItem: {
-    width: width * 0.4,
-    marginRight: Spacing.md,
+    width: 156,
+    marginRight: 10,
   },
+
+  /* Feed Grid */
   listContent: {
-    paddingBottom: Spacing.xxl,
+    paddingBottom: 130, // Generous bottom clearance above tab bar and floating + button
   },
   row: {
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.md,
+    marginBottom: 10,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: Colors.surface,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    maxHeight: '88%',
-    paddingBottom: Spacing.xl,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+
+  /* Empty State */
+  emptyContainer: {
     alignItems: 'center',
-    paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    justifyContent: 'center',
+    paddingVertical: 48,
+    paddingHorizontal: Spacing.xl,
   },
-  modalTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  modalTitle: {
-    fontSize: Typography.sizes.lg,
-    fontWeight: Typography.weights.bold,
-    color: '#1A2B4C',
-  },
-  modalSubtitle: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.textSecondary,
-    paddingHorizontal: Spacing.lg,
-    marginTop: 6,
-    marginBottom: Spacing.sm,
-  },
-  modalCloseBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#F3F4F6',
+  emptyIconCircle: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    backgroundColor: '#FFF7F2',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  modalSearchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F3F4F6',
-    marginHorizontal: Spacing.lg,
-    marginBottom: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 10,
-    borderRadius: 12,
-    gap: 8,
-  },
-  modalSearchInput: {
-    flex: 1,
-    fontSize: Typography.sizes.sm,
-    color: Colors.text,
-  },
-  servicesList: {
-    paddingHorizontal: Spacing.lg,
-    maxHeight: 400,
-  },
-  serviceCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.card,
-    borderRadius: 16,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
     borderWidth: 1,
-    borderColor: '#F3F4F6',
-    ...Shadows.small,
+    borderColor: '#FFE3D3',
+    marginBottom: 12,
   },
-  serviceImageContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 14,
-    overflow: 'hidden',
-    backgroundColor: '#F3F4F6',
-    marginRight: Spacing.md,
-  },
-  serviceImage: {
-    width: '100%',
-    height: '100%',
-  },
-  serviceInfo: {
-    flex: 1,
-  },
-  serviceBadgeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 2,
-  },
-  serviceBadge: {
-    backgroundColor: '#FFF7ED',
-    borderWidth: 1,
-    borderColor: '#FFEDD5',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
-  },
-  serviceBadgeText: {
-    fontSize: 10,
-    color: Colors.primary,
-    fontWeight: '700',
-  },
-  serviceProviderText: {
-    fontSize: 10,
-    color: Colors.textSecondary,
-  },
-  serviceName: {
-    fontSize: Typography.sizes.sm,
-    fontWeight: Typography.weights.bold,
-    color: Colors.text,
-    marginBottom: 2,
-  },
-  serviceTagline: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.textSecondary,
-    marginBottom: 4,
-    lineHeight: 16,
-  },
-  serviceBottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  servicePrice: {
-    fontSize: Typography.sizes.sm,
+  emptyTitle: {
+    fontSize: 15,
     fontWeight: '800',
-    color: Colors.primary,
+    color: '#0F172A',
+    textAlign: 'center',
   },
-  serviceRating: {
+  emptySubtitle: {
+    fontSize: 12,
+    color: '#64748B',
+    textAlign: 'center',
+    marginTop: 4,
+    lineHeight: 18,
+  },
+  emptyResetBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
-  },
-  serviceRatingText: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.text,
-    fontWeight: '600',
-  },
-  serviceActionBtn: {
     backgroundColor: Colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    marginLeft: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 9,
+    borderRadius: 12,
+    marginTop: 14,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  serviceActionBtnText: {
+  emptyResetBtnText: {
     color: '#FFFFFF',
-    fontSize: Typography.sizes.xs,
+    fontSize: 12,
     fontWeight: '700',
-  },
-  modalFooterBtn: {
-    marginHorizontal: Spacing.lg,
-    marginTop: Spacing.sm,
-    backgroundColor: '#1A2B4C',
-    paddingVertical: 14,
-    borderRadius: 14,
-    alignItems: 'center',
-  },
-  modalFooterBtnText: {
-    color: '#FFFFFF',
-    fontSize: Typography.sizes.sm,
-    fontWeight: '700',
-  },
-  modalSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.sm,
-    marginTop: Spacing.sm,
-  },
-  modalSectionTitle: {
-    fontSize: Typography.sizes.md,
-    fontWeight: '800',
-    color: '#1A2B4C',
-  },
-  modalSectionBadge: {
-    backgroundColor: '#EEF2FF',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  modalSectionBadgeText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: Colors.primary,
-  },
-  moreCategoryCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: Spacing.md,
-    marginBottom: Spacing.sm,
-    borderWidth: 1.5,
-    ...Shadows.small,
-  },
-  moreCategoryImageContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    overflow: 'hidden',
-    marginRight: Spacing.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  moreCategoryImage: {
-    width: '100%',
-    height: '100%',
-  },
-  moreCategoryInfo: {
-    flex: 1,
-  },
-  moreCategoryTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 2,
-  },
-  moreCategoryTitle: {
-    fontSize: Typography.sizes.sm,
-    fontWeight: '800',
-    color: Colors.text,
-  },
-  moreCategoryTag: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
-    borderWidth: 1,
-  },
-  moreCategoryTagText: {
-    fontSize: 9,
-    fontWeight: '800',
-  },
-  moreCategorySubtitle: {
-    fontSize: Typography.sizes.xs,
-    color: Colors.textSecondary,
-    lineHeight: 16,
-  },
-  moreCategoryArrow: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 6,
   },
 });

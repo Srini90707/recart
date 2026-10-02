@@ -207,6 +207,8 @@ function CategoryScreenContent() {
             placeholderTextColor="#94A3B8"
             returnKeyType="search"
             autoCorrect={false}
+            multiline={false}
+            numberOfLines={1}
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, StyleSheet, Image, Animated, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 
 import { AuthContext } from '../context/AuthContext';
@@ -46,7 +45,11 @@ export default function WelcomeScreen() {
       <View style={styles.content}>
         {/* Logo Section */}
         <View style={styles.logoContainer}>
-          <Ionicons name="cart" size={80} color={Colors.primary} style={styles.cartIcon} />
+          <Image 
+            source={require('../../assets/images/app-logo.png')} 
+            style={styles.appLogo} 
+            resizeMode="contain" 
+          />
           
           <View style={styles.brandNameContainer}>
             <Text style={styles.brandRe}>Re</Text>
@@ -141,8 +144,11 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
   },
-  cartIcon: {
-    marginBottom: 5,
+  appLogo: {
+    width: 88,
+    height: 88,
+    borderRadius: 22,
+    marginBottom: 8,
   },
   brandNameContainer: {
     flexDirection: 'row',

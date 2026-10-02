@@ -30,36 +30,40 @@ export default function ProductCard({ product, onPress, onFavoritePress }) {
         >
           <Ionicons 
             name={product.isFavorite ? 'heart' : 'heart-outline'} 
-            size={18} 
+            size={16} 
             color={product.isFavorite ? '#EF4444' : '#64748B'} 
           />
         </TouchableOpacity>
         {isVerified && (
           <View style={styles.verifiedBadge}>
-            <Ionicons name="checkmark-circle" size={12} color="#FFFFFF" />
+            <Ionicons name="checkmark-circle" size={10} color="#FFFFFF" />
             <Text style={styles.verifiedText}>Verified</Text>
           </View>
         )}
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.priceRow}>
-          <Text style={styles.price}>₹{product.price.toLocaleString('en-IN')}</Text>
+          <Text style={styles.price}>
+            ₹{product.price?.toLocaleString('en-IN')}
+            {product.rentalPeriod ? <Text style={styles.rentalPeriodText}> {product.rentalPeriod}</Text> : null}
+          </Text>
           {product.condition ? (
             <View style={styles.conditionBadge}>
               <Text style={styles.conditionText}>{product.condition}</Text>
             </View>
           ) : null}
         </View>
+
         <Text style={styles.title} numberOfLines={2}>{product.title}</Text>
         
         <View style={styles.metaRow}>
           <View style={styles.locationRow}>
-            <Ionicons name="location-outline" size={11} color={Colors.textSecondary} />
+            <Ionicons name="location-outline" size={10} color={Colors.textSecondary} />
             <Text style={styles.location} numberOfLines={1}> {product.location}</Text>
           </View>
           {product.postedTime && (
             <View style={styles.timeRow}>
-              <Ionicons name="time-outline" size={11} color={Colors.textSecondary} />
+              <Ionicons name="time-outline" size={10} color={Colors.textSecondary} />
               <Text style={styles.postedTime}> {product.postedTime}</Text>
             </View>
           )}

@@ -1,28 +1,36 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '../../constants/Colors';
-import Typography from '../../constants/Typography';
 import Spacing from '../../constants/Spacing';
 
 export default function AppHeader({ title, leftIcon, onLeftPress, rightIcon, onRightPress }) {
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
-        {leftIcon && (
-          <TouchableOpacity onPress={onLeftPress} style={styles.iconButton}>
+        {leftIcon ? (
+          <TouchableOpacity 
+            onPress={onLeftPress} 
+            style={styles.iconButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            activeOpacity={0.7}
+          >
             {leftIcon}
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
       <View style={styles.titleContainer}>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
       </View>
       <View style={styles.rightContainer}>
-        {rightIcon && (
-          <TouchableOpacity onPress={onRightPress} style={styles.iconButton}>
+        {rightIcon ? (
+          <TouchableOpacity 
+            onPress={onRightPress} 
+            style={styles.iconButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            activeOpacity={0.7}
+          >
             {rightIcon}
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
     </View>
   );
@@ -33,10 +41,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: Spacing.md,
-    backgroundColor: Colors.card,
+    paddingVertical: 12,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    borderBottomColor: '#F1F5F9',
   },
   leftContainer: {
     flex: 1,
@@ -44,7 +52,7 @@ const styles = StyleSheet.create({
     paddingLeft: Spacing.md,
   },
   titleContainer: {
-    flex: 2,
+    flex: 3,
     alignItems: 'center',
   },
   rightContainer: {
@@ -53,11 +61,19 @@ const styles = StyleSheet.create({
     paddingRight: Spacing.md,
   },
   title: {
-    fontSize: Typography.sizes.lg,
-    fontWeight: Typography.weights.bold,
-    color: Colors.text,
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#0F172A',
+    letterSpacing: -0.3,
   },
   iconButton: {
-    padding: Spacing.xs,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
   },
 });
