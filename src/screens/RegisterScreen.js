@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
+import { resetRoot } from '../navigation/navigationRef';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppInput from '../components/common/AppInput';
 import AppButton from '../components/common/AppButton';
@@ -36,17 +37,28 @@ export default function RegisterScreen() {
     setLoading(true);
     // Simulate network delay
     setTimeout(async () => {
-      setLoading(false);
-      // Create a mock user
-      const newUser = {
-        ...MOCK_USER,
-        name,
-        email,
-        phone,
-        location,
-      };
-      await login(newUser);
-    }, 1000);
+      try {
+        const newUser = {
+          ...MOCK_USER,
+          name,
+          email,
+          phone,
+          location,
+        };
+        await login(newUser);
+        resetRoot('Main');
+        const parent = navigation.getParent();
+        if (parent) {
+          parent.replace('Main');
+        } else {
+          navigation.navigate('Main');
+        }
+      } catch (err) {
+        console.error('Register error:', err);
+      } finally {
+        setLoading(false);
+      }
+    }, 600);
   };
 
   return (

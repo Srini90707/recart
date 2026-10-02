@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppHeader from '../components/header/AppHeader';

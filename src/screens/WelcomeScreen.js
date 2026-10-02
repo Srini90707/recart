@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, StyleSheet, Image, Animated, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Typography from '../constants/Typography';
 import Colors from '../constants/Colors';
 
 import { AuthContext } from '../context/AuthContext';
@@ -12,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 export default function WelcomeScreen() {
   const navigation = useNavigation();
   const { user, hasCompletedOnboarding } = useContext(AuthContext);
-  const loadingAnim = useRef(new Animated.Value(0)).current;
+  const [loadingAnim] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     // Animate loading bar
@@ -29,7 +28,7 @@ export default function WelcomeScreen() {
         navigation.replace('Main');
       }
     });
-  }, [hasCompletedOnboarding, user, navigation]);
+  }, [hasCompletedOnboarding, user, navigation, loadingAnim]);
 
   const progressWidth = loadingAnim.interpolate({
     inputRange: [0, 1],

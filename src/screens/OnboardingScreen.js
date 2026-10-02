@@ -1,15 +1,15 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppButton from '../components/common/AppButton';
-import Typography from '../constants/Typography';
-import Spacing from '../constants/Spacing';
 import Colors from '../constants/Colors';
+import Spacing from '../constants/Spacing';
+import Typography from '../constants/Typography';
 import Shadows from '../constants/Shadows';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const SLIDES = [
   {
@@ -34,8 +34,8 @@ export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { completeOnboarding } = useContext(AuthContext);
   
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const [fadeAnim] = useState(() => new Animated.Value(1));
+  const [scaleAnim] = useState(() => new Animated.Value(1));
 
   const animateTransition = (nextIndex) => {
     Animated.sequence([

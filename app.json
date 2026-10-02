@@ -10,6 +10,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.recart.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -22,7 +23,14 @@
     },
     "scheme": "recart",
     "plugins": [
-      "expo-status-bar"
-    ]
+      "expo-status-bar",
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7115598b-d782-4f9f-ae70-41e42b70bee5"
+      }
+    },
+    "owner": "vasreddy"
   }
 }

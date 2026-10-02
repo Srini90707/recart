@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { View, FlatList, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import ScreenContainer from '../components/common/ScreenContainer';
 import SearchBar from '../components/search/SearchBar';
 import ProductCard from '../components/product/ProductCard';
-import { MOCK_CATEGORIES } from '../data/mockData';
+import { MOCK_BASE_CATEGORIES, MOCK_EXPANDED_CATEGORIES } from '../data/mockData';
 import { ListingsContext } from '../context/ListingsContext';
 import { FavoritesContext } from '../context/FavoritesContext';
 import Colors from '../constants/Colors';
@@ -15,19 +15,74 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('buy');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [failedImages, setFailedImages] = useState({});
   
   const { listings } = useContext(ListingsContext);
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
 
   const activeListings = listings.filter(l => l.status !== 'inactive' && l.status !== 'sold');
 
-  // Featured listings (first 3)
-  const featuredListings = activeListings.slice(0, 3);
-  // Nearby items
-  const nearbyListings = activeListings;
+  // Filter listings based on selectedCategory and searchQuery
+  const filteredListings = activeListings.filter(item => {
+    const matchesCategory = selectedCategory 
+      ? item.category?.toLowerCase() === selectedCategory.toLowerCase()
+      : true;
+    const matchesSearch = searchQuery.trim() 
+      ? item.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.location?.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+    return matchesCategory && matchesSearch;
+  });
+
+  // Featured listings
+  const featuredListings = (selectedCategory ? filteredListings : activeListings).slice(0, 4);
+  const nearbyListings = filteredListings;
 
   const handleProductPress = (product) => {
     navigation.navigate('ProductDetails', { id: product.id });
+  };
+
+  // Categories displayed: 6 items (2 rows) when collapsed, 9 items (3 rows) when expanded
+  const displayedCategories = isExpanded
+    ? [
+        ...MOCK_BASE_CATEGORIES,
+        ...MOCK_EXPANDED_CATEGORIES,
+        {
+          id: 'less',
+          name: 'Less',
+          isAction: 'less',
+          icon: 'chevron-up',
+          color: '#FFF7ED',
+          borderColor: '#FFEDD5',
+        },
+      ]
+    : [
+        ...MOCK_BASE_CATEGORIES,
+        {
+          id: 'more',
+          name: 'More',
+          isAction: 'more',
+          icon: 'chevron-down',
+          image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop&q=80',
+          color: '#FFF7ED',
+          borderColor: '#FFEDD5',
+        },
+      ];
+
+  const handleCategoryPress = (cat) => {
+    if (cat.isAction === 'more') {
+      setIsExpanded(true);
+    } else if (cat.isAction === 'less') {
+      setIsExpanded(false);
+    } else {
+      navigation.navigate('Category', {
+        categoryId: cat.id,
+        categoryName: cat.name,
+      });
+    }
   };
 
   const renderHeader = () => (
@@ -68,22 +123,66 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
+      {/* Categories Grid (Inline Expandable) */}
       <View style={styles.categoriesGrid}>
-        {MOCK_CATEGORIES.map((cat, index) => (
-          <TouchableOpacity key={cat.id} style={styles.categoryItem} onPress={() => {}}>
-            <View style={styles.categoryIconContainer}>
-              <Ionicons name={cat.icon} size={24} color={Colors.primary} />
-            </View>
-            <Text style={styles.categoryText}>{cat.name}</Text>
-          </TouchableOpacity>
-        ))}
-        <TouchableOpacity style={styles.categoryItem}>
-          <View style={styles.categoryIconContainer}>
-            <Ionicons name="ellipsis-horizontal" size={24} color={Colors.primary} />
-          </View>
-          <Text style={styles.categoryText}>More</Text>
-        </TouchableOpacity>
+        {displayedCategories.map((cat) => {
+          const isSelected = selectedCategory === cat.name;
+          const fallbackUri = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&auto=format&fit=crop&q=80';
+          const imageUri = failedImages[cat.id] ? fallbackUri : cat.image;
+
+          return (
+            <TouchableOpacity 
+              key={cat.id} 
+              style={styles.categoryItem} 
+              onPress={() => handleCategoryPress(cat)}
+              activeOpacity={0.8}
+            >
+              <View style={[
+                styles.categoryImageContainer, 
+                { 
+                  backgroundColor: cat.color || '#FFF7F2',
+                  borderColor: isSelected ? Colors.primary : (cat.borderColor || '#FFE3D3'),
+                  borderWidth: isSelected ? 2.5 : 1.5,
+                }
+              ]}>
+                {cat.isAction === 'less' ? (
+                  <View style={styles.lessIconWrapper}>
+                    <Ionicons name="chevron-up" size={28} color={Colors.primary} />
+                  </View>
+                ) : (
+                  <Image 
+                    source={{ uri: imageUri }} 
+                    style={styles.categoryImage} 
+                    resizeMode="cover"
+                    onError={() => setFailedImages(prev => ({ ...prev, [cat.id]: true }))}
+                  />
+                )}
+                <View style={[styles.categoryBadge, isSelected && styles.categoryBadgeActive]}>
+                  <Ionicons name={cat.icon} size={11} color="#FFFFFF" />
+                </View>
+              </View>
+              <Text 
+                style={[styles.categoryText, isSelected && styles.categoryTextActive]}
+                numberOfLines={1}
+              >
+                {cat.name}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
+
+      {selectedCategory && (
+        <View style={styles.activeFilterRow}>
+          <Text style={styles.activeFilterText}>
+            Showing: <Text style={{ fontWeight: '700', color: Colors.primary }}>{selectedCategory}</Text> ({filteredListings.length} items)
+          </Text>
+          <TouchableOpacity onPress={() => setSelectedCategory(null)} style={styles.clearFilterBtn}>
+            <Text style={styles.clearFilterText}>Show All</Text>
+            <Ionicons name="close-circle" size={16} color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={styles.promoBanner}>
         <View>
@@ -113,7 +212,9 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Nearby Items</Text>
+        <Text style={styles.sectionTitle}>
+          {selectedCategory ? `${selectedCategory} Items` : 'Nearby Items'}
+        </Text>
         <Text style={styles.seeAll}>See All</Text>
       </View>
     </View>
@@ -128,6 +229,13 @@ export default function HomeScreen() {
         contentContainerStyle={styles.listContent}
         columnWrapperStyle={styles.row}
         ListHeaderComponent={renderHeader}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Ionicons name="basket-outline" size={48} color={Colors.textSecondary} />
+            <Text style={styles.emptyTitle}>No items found in {selectedCategory || 'this search'}</Text>
+            <Text style={styles.emptySubtitle}>Try choosing another category or clearing filters</Text>
+          </View>
+        }
         renderItem={({ item }) => (
           <ProductCard
             product={{ ...item, isFavorite: isFavorite(item.id) }}

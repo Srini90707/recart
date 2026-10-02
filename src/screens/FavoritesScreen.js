@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppHeader from '../components/header/AppHeader';

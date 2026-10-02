@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import ScreenContainer from '../components/common/ScreenContainer';
@@ -30,50 +30,70 @@ export default function ProductDetailsScreen({ route }) {
     );
   }
 
+  const isFav = isFavorite ? isFavorite(product.id) : false;
+
   return (
     <ScreenContainer noPadding>
       <AppHeader 
         title="Details" 
         leftIcon={<Ionicons name="arrow-back" size={24} color={Colors.text} />} 
         onLeftPress={() => navigation.goBack()} 
-        rightIcon={<Ionicons name={product.isFavorite ? 'heart' : 'heart-outline'} size={24} color={product.isFavorite ? Colors.error : Colors.text} />}
+        rightIcon={<Ionicons name={isFav ? 'heart' : 'heart-outline'} size={24} color={isFav ? Colors.error : Colors.text} />}
+        onRightPress={() => toggleFavorite && toggleFavorite(product)}
       />
-      <ScrollView>
-        <Image source={{ uri: product.image }} style={styles.image} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Image 
+          source={{ uri: product.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80' }} 
+          style={styles.image} 
+        />
         
         <View style={styles.content}>
           <View style={styles.titleRow}>
             <Text style={styles.title}>{product.title}</Text>
-            <Text style={styles.price}>${product.price}</Text>
+            <Text style={styles.price}>₹{product.price ? product.price.toLocaleString('en-IN') : '0'}</Text>
           </View>
           
           <View style={styles.badges}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{product.condition}</Text>
-            </View>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{product.category}</Text>
-            </View>
+            {product.condition && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{product.condition}</Text>
+              </View>
+            )}
+            {product.category && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{product.category}</Text>
+              </View>
+            )}
+            {product.postedTime && (
+              <View style={[styles.badge, { backgroundColor: '#F1F5F9' }]}>
+                <Ionicons name="time-outline" size={12} color="#64748B" style={{ marginRight: 3 }} />
+                <Text style={[styles.badgeText, { color: '#64748B' }]}>{product.postedTime}</Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.locationContainer}>
-            <Ionicons name="location-sharp" size={16} color={Colors.textSecondary} style={styles.locationIcon} />
-            <Text style={styles.location}>{product.location}</Text>
+            <Ionicons name="location-sharp" size={16} color={Colors.primary} style={styles.locationIcon} />
+            <Text style={styles.location}>{product.location || 'Bengaluru'}</Text>
           </View>
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>
-              This is a mock description for {product.title}. It's in great condition and works perfectly. Feel free to contact the seller for more details!
+              {product.description || `This is a pre-verified listing for ${product.title}. It is in ${product.condition || 'excellent'} condition and ready for immediate handover or delivery. Genuine buyers only.`}
             </Text>
           </View>
 
           <View style={styles.sellerCard}>
             <View style={styles.sellerInfo}>
-              <View style={styles.sellerAvatar} />
+              <View style={styles.sellerAvatar}>
+                <Ionicons name="person" size={24} color="#64748B" />
+              </View>
               <View>
-                <Text style={styles.sellerName}>{product.seller.name}</Text>
-                <Text style={styles.sellerRating}><Ionicons name="star" size={14} color={Colors.warning} /> {product.seller.rating}</Text>
+                <Text style={styles.sellerName}>{product.seller?.name || 'Verified ReCart Member'}</Text>
+                <Text style={styles.sellerRating}>
+                  <Ionicons name="star" size={14} color={Colors.warning} /> {product.seller?.rating || '4.8'} • Verified Seller
+                </Text>
               </View>
             </View>
           </View>
@@ -81,8 +101,17 @@ export default function ProductDetailsScreen({ route }) {
       </ScrollView>
       
       <View style={styles.footer}>
-        <AppButton title="Contact Seller" style={styles.contactBtn} />
-        <AppButton title="Buy Now" variant="secondary" style={styles.contactBtn} />
+        <AppButton 
+          title="Make Offer" 
+          variant="secondary" 
+          style={styles.contactBtn} 
+          onPress={() => alert('Offer submitted to seller!')}
+        />
+        <AppButton 
+          title="Chat with Seller" 
+          style={styles.contactBtn} 
+          onPress={() => alert('Starting chat with seller...')}
+        />
       </View>
     </ScreenContainer>
   );

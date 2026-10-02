@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
+import { resetRoot } from '../navigation/navigationRef';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppInput from '../components/common/AppInput';
 import AppButton from '../components/common/AppButton';
@@ -14,28 +15,39 @@ import { Ionicons } from '@expo/vector-icons';
 export default function LoginScreen() {
   const navigation = useNavigation();
   const { login } = useContext(AuthContext);
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
+  const [identifier, setIdentifier] = useState('demo@recart.com');
+  const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!identifier || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
-
+  const performLogin = async (id, pwd) => {
     setLoading(true);
-    // Simulate network delay
     setTimeout(async () => {
-      setLoading(false);
-      // Hardcoded mock login check or anything just to let the user login
-      // Because we are frontend only, we will just let them in
-      const newUser = {
-        ...MOCK_USER,
-        email: identifier.includes('@') ? identifier : 'user@example.com',
-      };
-      await login(newUser);
-    }, 1000);
+      try {
+        const emailToUse = id && id.includes('@') ? id : (id ? `${id}@recart.com` : 'demo@recart.com');
+        const newUser = {
+          ...MOCK_USER,
+          email: emailToUse,
+          name: id ? (id.includes('@') ? id.split('@')[0] : id) : 'Demo User',
+        };
+        await login(newUser);
+        resetRoot('Main');
+        // Fallback navigation
+        const parent = navigation.getParent();
+        if (parent) {
+          parent.replace('Main');
+        } else {
+          navigation.navigate('Main');
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+      } finally {
+        setLoading(false);
+      }
+    }, 500);
+  };
+
+  const handleLogin = () => {
+    performLogin(identifier, password);
   };
 
   return (
@@ -52,6 +64,13 @@ export default function LoginScreen() {
           <Text style={styles.title}>Welcome Back</Text>
           <Text style={styles.subtitle}>Login to your ReCart account</Text>
           
+          <View style={styles.demoNotice}>
+            <Ionicons name="information-circle" size={18} color={Colors.primary} />
+            <Text style={styles.demoNoticeText}>
+              Any email/number & password works, or simply tap Login below.
+            </Text>
+          </View>
+
           <AppInput 
             label="Email / Mobile Number"
             value={identifier}
@@ -80,7 +99,7 @@ export default function LoginScreen() {
           />
           
           <View style={styles.registerContainer}>
-            <Text style={styles.noAccount}>Don't have an account? </Text>
+            <Text style={styles.noAccount}>{"Don't have an account? "}</Text>
             <Text style={styles.registerLink} onPress={() => navigation.navigate('Register')}>
               Create Account
             </Text>
@@ -123,6 +142,24 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xl,
     borderRadius: 30,
     paddingVertical: 16,
+  },
+  demoNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF7F2',
+    borderWidth: 1,
+    borderColor: '#FFD7C2',
+    borderRadius: 12,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    marginBottom: Spacing.lg,
+    gap: 8,
+  },
+  demoNoticeText: {
+    flex: 1,
+    fontSize: Typography.sizes.sm,
+    color: Colors.textSecondary,
+    lineHeight: 18,
   },
   registerContainer: {
     flexDirection: 'row',

@@ -8,18 +8,21 @@ export function ListingsProvider({ children }) {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
+    async function loadListings() {
+      let data = await StorageService.getListings();
+      const hasBrokenPlaceholders = data && data.some(item => item.image && item.image.includes('placeholder'));
+      const needsFreshElectronics = data && !data.some(item => item.id === 'e1');
+      const needsFreshServicesData = data && !data.some(item => item.id === '6' && item.subCategory === 'Appliance Repair');
+      const needsFreshServices = data && data.length < MOCK_PRODUCTS.length;
+      if (!data || data.length === 0 || hasBrokenPlaceholders || needsFreshServices || needsFreshElectronics || needsFreshServicesData) {
+        data = [...MOCK_PRODUCTS];
+        await StorageService.saveListings(data);
+      }
+      setListings(data);
+    }
+
     loadListings();
   }, []);
-
-  const loadListings = async () => {
-    let data = await StorageService.getListings();
-    if (!data || data.length === 0) {
-      // Seed with mock products for demonstration if empty
-      data = [...MOCK_PRODUCTS];
-      await StorageService.saveListings(data);
-    }
-    setListings(data);
-  };
 
   const addListing = async (newListing) => {
     const listingWithId = {

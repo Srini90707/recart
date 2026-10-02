@@ -13,7 +13,7 @@ class StorageService {
     try {
       const value = await AsyncStorage.getItem(KEYS.ONBOARDING);
       return value === 'true';
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -30,7 +30,7 @@ class StorageService {
     try {
       const user = await AsyncStorage.getItem(KEYS.USER);
       return user ? JSON.parse(user) : null;
-    } catch (e) {
+    } catch (_e) {
       return null;
     }
   }
@@ -55,7 +55,7 @@ class StorageService {
     try {
       const faves = await AsyncStorage.getItem(KEYS.FAVORITES);
       return faves ? JSON.parse(faves) : [];
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   }
@@ -72,7 +72,7 @@ class StorageService {
     try {
       const listings = await AsyncStorage.getItem(KEYS.LISTINGS);
       return listings ? JSON.parse(listings) : [];
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   }

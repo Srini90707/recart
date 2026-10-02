@@ -5,12 +5,24 @@ import { View } from 'react-native';
 import Colors from '../constants/Colors';
 
 import HomeScreen from '../screens/HomeScreen';
+import CategoryScreen from '../screens/CategoryScreen';
 import SearchScreen from '../screens/SearchScreen';
 import CreateListingScreen from '../screens/CreateListingScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackNavigator() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+      <HomeStack.Screen name="Category" component={CategoryScreen} />
+    </HomeStack.Navigator>
+  );
+}
 
 export default function BottomTabNavigator() {
   return (
@@ -27,7 +39,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackNavigator}
         options={{
           tabBarIcon: ({ color }) => <Ionicons name="home-outline" size={24} color={color} />,
         }}

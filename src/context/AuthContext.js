@@ -9,22 +9,22 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    async function loadInitialState() {
+      try {
+        const onboarded = await StorageService.getOnboardingStatus();
+        const currentUser = await StorageService.getCurrentUser();
+        
+        setHasCompletedOnboarding(onboarded);
+        setUser(currentUser);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     loadInitialState();
   }, []);
-
-  const loadInitialState = async () => {
-    try {
-      const onboarded = await StorageService.getOnboardingStatus();
-      const currentUser = await StorageService.getCurrentUser();
-      
-      setHasCompletedOnboarding(onboarded);
-      setUser(currentUser);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const login = async (userData) => {
     await StorageService.saveCurrentUser(userData);

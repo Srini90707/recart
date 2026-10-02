@@ -7,13 +7,13 @@ export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
+    async function loadFavorites() {
+      const data = await StorageService.getFavorites();
+      setFavorites(data || []);
+    }
+
     loadFavorites();
   }, []);
-
-  const loadFavorites = async () => {
-    const data = await StorageService.getFavorites();
-    setFavorites(data || []);
-  };
 
   const toggleFavorite = async (product) => {
     let updated;

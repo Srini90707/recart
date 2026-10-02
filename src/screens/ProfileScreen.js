@@ -1,18 +1,22 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppHeader from '../components/header/AppHeader';
 import AppButton from '../components/common/AppButton';
 import { AuthContext } from '../context/AuthContext';
+import { resetRoot } from '../navigation/navigationRef';
 import Spacing from '../constants/Spacing';
 import Typography from '../constants/Typography';
 import Colors from '../constants/Colors';
 
 export default function ProfileScreen() {
-  const navigation = useNavigation();
   const { user, logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    await logout();
+    resetRoot('Auth');
+  };
 
   if (!user) return null;
 
@@ -41,7 +45,7 @@ export default function ProfileScreen() {
           <AppButton title="Messages" variant="secondary" style={styles.menuItem} />
           <AppButton title="Payment Methods" variant="secondary" style={styles.menuItem} />
           <AppButton title="Settings" variant="secondary" style={styles.menuItem} />
-          <AppButton title="Logout" variant="danger" onPress={logout} style={styles.menuItem} />
+          <AppButton title="Logout" variant="danger" onPress={handleLogout} style={styles.menuItem} />
         </View>
       </ScrollView>
     </ScreenContainer>
