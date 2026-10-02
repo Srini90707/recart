@@ -6,6 +6,7 @@ const KEYS = {
   FAVORITES: '@recart_favorites',
   LISTINGS: '@recart_listings',
   MESSAGES: '@recart_messages',
+  LOCATION: '@recart_location',
 };
 
 class StorageService {
@@ -80,6 +81,23 @@ class StorageService {
   async saveListings(listings) {
     try {
       await AsyncStorage.setItem(KEYS.LISTINGS, JSON.stringify(listings));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async getLocation() {
+    try {
+      const location = await AsyncStorage.getItem(KEYS.LOCATION);
+      return location ? JSON.parse(location) : null;
+    } catch (_e) {
+      return null;
+    }
+  }
+
+  async saveLocation(location) {
+    try {
+      await AsyncStorage.setItem(KEYS.LOCATION, JSON.stringify(location));
     } catch (e) {
       console.error(e);
     }

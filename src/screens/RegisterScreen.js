@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
+import { LocationContext } from '../context/LocationContext';
 import { resetRoot } from '../navigation/navigationRef';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppInput from '../components/common/AppInput';
@@ -15,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function RegisterScreen() {
   const navigation = useNavigation();
   const { login } = useContext(AuthContext);
+  const { requestLocation } = useContext(LocationContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -46,6 +48,9 @@ export default function RegisterScreen() {
           location,
         };
         await login(newUser);
+        try {
+          await requestLocation(true);
+        } catch (_locErr) {}
         resetRoot('Main');
         const parent = navigation.getParent();
         if (parent) {

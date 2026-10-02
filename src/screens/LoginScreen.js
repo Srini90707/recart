@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
+import { LocationContext } from '../context/LocationContext';
 import { resetRoot } from '../navigation/navigationRef';
 import ScreenContainer from '../components/common/ScreenContainer';
 import AppInput from '../components/common/AppInput';
@@ -15,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function LoginScreen() {
   const navigation = useNavigation();
   const { login } = useContext(AuthContext);
+  const { requestLocation } = useContext(LocationContext);
   const [identifier, setIdentifier] = useState('demo@recart.com');
   const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,9 @@ export default function LoginScreen() {
           name: id ? (id.includes('@') ? id.split('@')[0] : id) : 'Demo User',
         };
         await login(newUser);
+        try {
+          await requestLocation(true);
+        } catch (_locErr) {}
         resetRoot('Main');
         // Fallback navigation
         const parent = navigation.getParent();

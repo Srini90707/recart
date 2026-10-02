@@ -11,6 +11,10 @@
     },
     "android": {
       "package": "com.recart.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -24,7 +28,13 @@
     "scheme": "recart",
     "plugins": [
       "expo-status-bar",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow ReCart to use your location to discover listings near you."
+        }
+      ]
     ],
     "extra": {
       "eas": {

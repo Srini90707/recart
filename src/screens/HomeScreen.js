@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, FlatList, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import ProductCard from '../components/product/ProductCard';
 import { MOCK_BASE_CATEGORIES, MOCK_EXPANDED_CATEGORIES } from '../data/mockData';
 import { ListingsContext } from '../context/ListingsContext';
 import { FavoritesContext } from '../context/FavoritesContext';
+import { LocationContext } from '../context/LocationContext';
 import Colors from '../constants/Colors';
 import { styles } from '../styles/HomeScreen.styles';
 
@@ -21,6 +22,14 @@ export default function HomeScreen() {
   
   const { listings } = useContext(ListingsContext);
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+  const { currentLocation, loadingLocation, requestLocation, hasLocationPermission } = useContext(LocationContext);
+
+  // Automatically prompt for location if not yet granted
+  useEffect(() => {
+    if (!hasLocationPermission) {
+      requestLocation(true);
+    }
+  }, [hasLocationPermission, requestLocation]);
 
   const activeListings = listings.filter(l => l.status !== 'inactive' && l.status !== 'sold');
 
@@ -93,10 +102,18 @@ export default function HomeScreen() {
             <Ionicons name="cart" size={24} color={Colors.primary} />
             <Text style={styles.logoText}>ReCart</Text>
           </View>
-          <View style={styles.locationContainer}>
+          <TouchableOpacity 
+            style={styles.locationContainer} 
+            onPress={() => requestLocation(true)}
+            activeOpacity={0.7}
+            accessibilityLabel="Update location"
+          >
             <Ionicons name="location-sharp" size={12} color={Colors.primary} />
-            <Text style={styles.locationText}>Bengaluru, Karnataka</Text>
-          </View>
+            <Text style={styles.locationText} numberOfLines={1}>
+              {loadingLocation ? 'Locating...' : (currentLocation?.formatted || 'Bengaluru, Karnataka')}
+            </Text>
+            <Ionicons name="chevron-down" size={10} color="#94A3B8" style={{ marginLeft: 3 }} />
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.headerIcon}>
           <Ionicons name="notifications-outline" size={24} color={Colors.text} />
