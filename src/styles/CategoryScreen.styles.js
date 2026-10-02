@@ -201,92 +201,43 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  /* Compact Filter / Sort Bar: [ Filter ] [ Sort By ] [ Location ] [ Price ] */
-  filterBarContainer: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
-  },
-  filterBarScroll: {
-    paddingHorizontal: 16,
-    gap: 8,
-    alignItems: 'center',
-  },
-  filterChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 13,
-    paddingVertical: 7,
-    borderRadius: 20,
-    backgroundColor: '#F8FAFC',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  filterChipActive: {
-    backgroundColor: '#FFF7ED',
-    borderColor: '#FF6B1A',
-  },
-  filterChipText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#334155',
-    marginLeft: 4,
-  },
-  filterChipTextActive: {
-    color: '#FF6B1A',
-    fontWeight: '700',
-  },
-  filterCountBadge: {
-    backgroundColor: '#FF6B1A',
-    width: 17,
-    height: 17,
-    borderRadius: 9,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 5,
-  },
-  filterCountText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontWeight: '700',
-  },
-
-  /* Active Filter Tags */
+  /* Active Filter Tags (Polished Minimalist Chips) */
   activeFilterSummaryRow: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 4,
+  },
+  activeFilterScroll: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 2,
-    flexWrap: 'wrap',
-    gap: 6,
+    gap: 8,
   },
   filterTag: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFF7ED',
     borderWidth: 1,
-    borderColor: '#FFEDD5',
-    paddingHorizontal: 9,
-    paddingVertical: 4,
-    borderRadius: 12,
+    borderColor: '#FFD8B3',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 16,
   },
   filterTagText: {
-    fontSize: 11,
-    color: '#FF6B1A',
+    fontSize: 12,
+    color: '#EA580C',
     fontWeight: '600',
     marginRight: 4,
   },
   clearAllTag: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 14,
+    backgroundColor: '#F1F5F9',
   },
   clearAllTagText: {
-    fontSize: 11,
+    fontSize: 12,
     color: '#64748B',
     fontWeight: '600',
-    textDecorationLine: 'underline',
   },
 
   /* Featured Section */

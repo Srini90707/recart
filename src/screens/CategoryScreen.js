@@ -16,7 +16,6 @@ import ScreenContainer from '../components/common/ScreenContainer';
 import ErrorBoundary from '../components/common/ErrorBoundary';
 import ProductCard from '../components/product/ProductCard';
 import FilterBottomSheet from '../components/filter/FilterBottomSheet';
-import SortBottomSheet from '../components/filter/SortBottomSheet';
 import { ListingsContext } from '../context/ListingsContext';
 import { FavoritesContext } from '../context/FavoritesContext';
 import { PRICE_RANGES } from '../data/categoryData';
@@ -57,7 +56,6 @@ function CategoryScreenContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
-  const [sortModalVisible, setSortModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('recommended');
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [subcatImageErrors, setSubcatImageErrors] = useState({});
@@ -345,141 +343,6 @@ function CategoryScreenContent() {
     </View>
   );
 
-  const getSortLabel = () => {
-    switch (selectedSort) {
-      case 'newest':
-        return 'Newest';
-      case 'price_low':
-        return 'Price: Low';
-      case 'price_high':
-        return 'Price: High';
-      case 'nearest':
-        return 'Nearest';
-      default:
-        return 'Sort By';
-    }
-  };
-
-  /** Compact Filter Bar: [ Filter ] [ Sort By ] [ Location ] [ Price ] */
-  const renderCompactFilterBar = () => (
-    <View style={styles.filterBarContainer}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filterBarScroll}
-      >
-        {/* [ Filter ] */}
-        <TouchableOpacity
-          style={[
-            styles.filterChip,
-            activeFiltersCount > 0 && styles.filterChipActive,
-          ]}
-          onPress={() => setFilterModalVisible(true)}
-          activeOpacity={0.8}
-        >
-          <Ionicons
-            name="options-outline"
-            size={14}
-            color={activeFiltersCount > 0 ? '#FF6B1A' : '#475569'}
-          />
-          <Text
-            style={[
-              styles.filterChipText,
-              activeFiltersCount > 0 && styles.filterChipTextActive,
-            ]}
-          >
-            Filter
-          </Text>
-          {activeFiltersCount > 0 && (
-            <View style={styles.filterCountBadge}>
-              <Text style={styles.filterCountText}>{activeFiltersCount}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-
-        {/* [ Sort By ] */}
-        <TouchableOpacity
-          style={[
-            styles.filterChip,
-            selectedSort !== 'recommended' && styles.filterChipActive,
-          ]}
-          onPress={() => setSortModalVisible(true)}
-          activeOpacity={0.8}
-        >
-          <Ionicons
-            name="swap-vertical-outline"
-            size={14}
-            color={selectedSort !== 'recommended' ? '#FF6B1A' : '#475569'}
-          />
-          <Text
-            style={[
-              styles.filterChipText,
-              selectedSort !== 'recommended' && styles.filterChipTextActive,
-            ]}
-          >
-            {getSortLabel()}
-          </Text>
-          <Ionicons
-            name="chevron-down"
-            size={12}
-            color={selectedSort !== 'recommended' ? '#FF6B1A' : '#94A3B8'}
-            style={{ marginLeft: 2 }}
-          />
-        </TouchableOpacity>
-
-        {/* [ Location ] */}
-        <TouchableOpacity
-          style={[
-            styles.filterChip,
-            filters.location !== 'All' && styles.filterChipActive,
-          ]}
-          onPress={() => setFilterModalVisible(true)}
-          activeOpacity={0.8}
-        >
-          <Ionicons
-            name="location-outline"
-            size={14}
-            color={filters.location !== 'All' ? '#FF6B1A' : '#475569'}
-          />
-          <Text
-            style={[
-              styles.filterChipText,
-              filters.location !== 'All' && styles.filterChipTextActive,
-            ]}
-          >
-            {filters.location !== 'All' ? filters.location : 'Location'}
-          </Text>
-        </TouchableOpacity>
-
-        {/* [ Price ] */}
-        <TouchableOpacity
-          style={[
-            styles.filterChip,
-            filters.priceRange !== 'all' && styles.filterChipActive,
-          ]}
-          onPress={() => setFilterModalVisible(true)}
-          activeOpacity={0.8}
-        >
-          <Ionicons
-            name="pricetag-outline"
-            size={14}
-            color={filters.priceRange !== 'all' ? '#FF6B1A' : '#475569'}
-          />
-          <Text
-            style={[
-              styles.filterChipText,
-              filters.priceRange !== 'all' && styles.filterChipTextActive,
-            ]}
-          >
-            {filters.priceRange !== 'all'
-              ? PRICE_RANGES.find((p) => p.id === filters.priceRange)?.label || 'Price'
-              : 'Price'}
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
-  );
-
   /** Renders active filter pill tags */
   const renderActiveFilterTags = () => {
     const hasActiveFilters = selectedSubCategory || activeFiltersCount > 0 || searchQuery.trim();
@@ -487,45 +350,67 @@ function CategoryScreenContent() {
 
     return (
       <View style={styles.activeFilterSummaryRow}>
-        {selectedSubCategory && (
-          <TouchableOpacity
-            style={styles.filterTag}
-            onPress={() => setSelectedSubCategory(null)}
-          >
-            <Text style={styles.filterTagText}>{selectedSubCategory}</Text>
-            <Ionicons name="close-circle" size={14} color="#FF6B1A" />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.activeFilterScroll}
+        >
+          {selectedSubCategory && (
+            <TouchableOpacity
+              style={styles.filterTag}
+              onPress={() => setSelectedSubCategory(null)}
+              activeOpacity={0.75}
+            >
+              <Text style={styles.filterTagText}>{selectedSubCategory}</Text>
+              <Ionicons name="close-circle" size={14} color="#FF6B1A" />
+            </TouchableOpacity>
+          )}
+          {filters.brand !== 'All' && (
+            <TouchableOpacity
+              style={styles.filterTag}
+              onPress={() => setFilters((p) => ({ ...p, brand: 'All' }))}
+              activeOpacity={0.75}
+            >
+              <Text style={styles.filterTagText}>Brand: {filters.brand}</Text>
+              <Ionicons name="close-circle" size={14} color="#FF6B1A" />
+            </TouchableOpacity>
+          )}
+          {filters.condition !== 'All' && (
+            <TouchableOpacity
+              style={styles.filterTag}
+              onPress={() => setFilters((p) => ({ ...p, condition: 'All' }))}
+              activeOpacity={0.75}
+            >
+              <Text style={styles.filterTagText}>{filters.condition}</Text>
+              <Ionicons name="close-circle" size={14} color="#FF6B1A" />
+            </TouchableOpacity>
+          )}
+          {filters.location !== 'All' && (
+            <TouchableOpacity
+              style={styles.filterTag}
+              onPress={() => setFilters((p) => ({ ...p, location: 'All' }))}
+              activeOpacity={0.75}
+            >
+              <Text style={styles.filterTagText}>{filters.location}</Text>
+              <Ionicons name="close-circle" size={14} color="#FF6B1A" />
+            </TouchableOpacity>
+          )}
+          {filters.priceRange !== 'all' && (
+            <TouchableOpacity
+              style={styles.filterTag}
+              onPress={() => setFilters((p) => ({ ...p, priceRange: 'all' }))}
+              activeOpacity={0.75}
+            >
+              <Text style={styles.filterTagText}>
+                {PRICE_RANGES.find((p) => p.id === filters.priceRange)?.label || 'Price'}
+              </Text>
+              <Ionicons name="close-circle" size={14} color="#FF6B1A" />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity onPress={handleClearFilters} style={styles.clearAllTag} activeOpacity={0.75}>
+            <Text style={styles.clearAllTagText}>Clear all</Text>
           </TouchableOpacity>
-        )}
-        {filters.brand !== 'All' && (
-          <TouchableOpacity
-            style={styles.filterTag}
-            onPress={() => setFilters((p) => ({ ...p, brand: 'All' }))}
-          >
-            <Text style={styles.filterTagText}>Brand: {filters.brand}</Text>
-            <Ionicons name="close-circle" size={14} color="#FF6B1A" />
-          </TouchableOpacity>
-        )}
-        {filters.condition !== 'All' && (
-          <TouchableOpacity
-            style={styles.filterTag}
-            onPress={() => setFilters((p) => ({ ...p, condition: 'All' }))}
-          >
-            <Text style={styles.filterTagText}>{filters.condition}</Text>
-            <Ionicons name="close-circle" size={14} color="#FF6B1A" />
-          </TouchableOpacity>
-        )}
-        {filters.location !== 'All' && (
-          <TouchableOpacity
-            style={styles.filterTag}
-            onPress={() => setFilters((p) => ({ ...p, location: 'All' }))}
-          >
-            <Text style={styles.filterTagText}>{filters.location}</Text>
-            <Ionicons name="close-circle" size={14} color="#FF6B1A" />
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity onPress={handleClearFilters} style={styles.clearAllTag}>
-          <Text style={styles.clearAllTagText}>Clear all</Text>
-        </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   };
@@ -611,7 +496,6 @@ function CategoryScreenContent() {
     <View>
       {renderSearchRow()}
       {renderSubcategoriesSection()}
-      {renderCompactFilterBar()}
       {renderActiveFilterTags()}
       {renderFeaturedSection()}
       <View style={styles.listingHeader}>
@@ -722,14 +606,6 @@ function CategoryScreenContent() {
         selectedSort={selectedSort}
         onSelectSort={handleSelectSort}
         totalCount={sortedListings.length}
-      />
-
-      {/* Quick Sort Bottom Sheet */}
-      <SortBottomSheet
-        visible={sortModalVisible}
-        onClose={() => setSortModalVisible(false)}
-        selectedSort={selectedSort}
-        onSelectSort={handleSelectSort}
       />
     </ScreenContainer>
   );
